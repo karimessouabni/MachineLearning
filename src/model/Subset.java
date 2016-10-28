@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Thomas on 04/10/2016.
+ * 
  */
 public class Subset {
     List<Training> learning = new ArrayList<>();

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by Thomas on 30/09/2016.
+ * 
  */
 public class Model {
     private Float[][] matrix;

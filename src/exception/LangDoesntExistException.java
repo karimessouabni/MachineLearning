@@ -1,7 +1,7 @@
 package exception;
 
 /**
- * Created by Thomas on 04/10/2016.
+ * 
  */
 public class LangDoesntExistException extends Exception{
     public LangDoesntExistException(String message) {

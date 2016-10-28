@@ -4,7 +4,7 @@ import exception.FeatureDoesntExistException;
 import java.util.ArrayList;
 
 /**
- * Created by Thomas on 20/09/2016.
+ * 
  */
 public class Decoder {
     /**

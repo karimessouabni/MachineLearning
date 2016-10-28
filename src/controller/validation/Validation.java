@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Thomas on 19/10/2016.
+ * 
  */
 public class Validation implements Runnable {
     private Model model;

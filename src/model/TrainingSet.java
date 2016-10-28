@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 /**
- * Created by Thomas on 30/09/2016.
+ * 
  */
 public class TrainingSet implements Callable<Subset> {
 	private ArrayList<Training> trainings = new ArrayList<>();

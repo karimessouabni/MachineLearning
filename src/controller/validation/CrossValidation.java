@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Created by Thomas on 19/10/2016.
+ * 
  */
 public class CrossValidation {
 	private Integer numberVal;

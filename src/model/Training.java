@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 /**
- * Created by Thomas on 30/09/2016.
+ * 
  */
 public class Training {
     private String language;

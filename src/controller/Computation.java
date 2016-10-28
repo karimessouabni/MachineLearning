@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Thomas on 24/10/2016.
+ * 
  */
 public class Computation {
 	private Model model;

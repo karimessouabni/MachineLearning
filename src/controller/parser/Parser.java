@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Thomas on 20/09/2016.
+ * 
  */
 public class Parser {
 	private ArrayList<String> langs = new ArrayList<>(); //  Array contains all the languages abbreviation 

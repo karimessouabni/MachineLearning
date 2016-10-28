@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Thomas on 24/10/2016.
+ * 
  */
 public class TrainingUtils {
     /**
