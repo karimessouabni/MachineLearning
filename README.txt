@@ -1,0 +1,7 @@
+# Machine Learning ET5 Project
+## Start date : 20/09/2016
+## Authors :
+Yassine KARRAY
+Karim ES-SOUABNI
+Pan KUN
+Thomas DUPRE
