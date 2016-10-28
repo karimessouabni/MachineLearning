@@ -7,7 +7,7 @@ import model.TrainingSet;
 import java.util.ArrayList;
 
 /**
- * Created by Thomas on 24/10/2016.
+ * 
  */
 public class Confusion {
     private Computation confusion;
