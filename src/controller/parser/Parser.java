@@ -15,7 +15,7 @@ public class Parser {
 
 	// private static final String PATH =
 	// "C:\\Users\\Thomas\\School\\Polytech\\Machine Learning\\tp\\workspace\\et5-projet\\train.txt";
-	private static final String PATH = "/Users/karim/Downloads/machinelearning16-et5-projet-9d5d53f9619f/smalltrain.txt";
+	private static final String PATH = "/Users/karim/Downloads/machinelearning16-et5-projet-9d5d53f9619f/train.txt";
 
 	/**
 	 * Parse the file

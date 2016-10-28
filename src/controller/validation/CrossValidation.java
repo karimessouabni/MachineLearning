@@ -1,93 +1,130 @@
 package controller.validation;
 
 import model.Model;
+import model.Subset;
 import model.TrainingSet;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by Thomas on 19/10/2016.
  */
 public class CrossValidation {
-    private Integer numberVal;
-    private ArrayList<Validation> validations;
-	private ArrayList<Thread> threads;
-    private Integer numberFeatures;
-    private static final Integer ratio = 10;
-    private static final Integer itMax = 15;
+	private Integer numberVal;
+	private ArrayList<Validation> validations = new ArrayList<>();
+	private ArrayList<Thread> threadsCreateValidation = new ArrayList<Thread>();
+	private ArrayList<Thread> threadsValidation = new ArrayList<Thread>();
+	private Integer numberFeatures;
+	private static final Integer ratio = 10;
+	private static final Integer itMax = 15;
 
-    public CrossValidation(TrainingSet trainingSet,  ArrayList<String> language, Integer number_validation, Integer number_features){
-        this.numberVal = number_validation;
-        this.numberFeatures = number_features;
-        this.threads = new ArrayList<Thread>();
-        this.validations = new ArrayList<>();
+	public CrossValidation(TrainingSet trainingSet, ArrayList<String> language,
+			Integer number_validation, Integer number_features) {
+		this.numberVal = number_validation;
+		this.numberFeatures = number_features;
+		try {
+			init(trainingSet, language);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        try{
-            init(trainingSet, language);
+	}
+
+	/**
+	 * Init the validation thread
+	 * 
+	 * @param trainingSet
+	 * @throws Exception
+	 */
+	private void init(TrainingSet trainingSet, ArrayList<String> language)
+			throws Exception {
+		
+		ExecutorService execute = Executors.newSingleThreadExecutor();
+        List<Future<Subset>> list = new ArrayList<Future<Subset>>();
+
+		for (int i = 0; i < numberVal; i++) {
+			Future<Subset> future = execute.submit(new TrainingSet(i));
+			list.add(future);
+		}
+
+		for(Future<Subset> fut : list){
+            try {
+                //print the return value of Future, notice the output delay in console
+                // because Future.get() waits for task to get completed
+//                System.out.println("Subeset --> "+fut.get());
+                TrainingSet.getSubsetsTab().add(fut.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        //shut down the executor service now
+		execute.shutdown();
 
-    }
+		
 
-    /**
-     * Init the validation thread
-     * @param trainingSet
-     * @throws Exception
-     */
-    private void init(TrainingSet trainingSet, ArrayList<String> language) throws Exception{
-        for(int i=0;i<numberVal;i++){
-            Validation validation = new Validation(trainingSet.getSubset(i, ratio), new Model(trainingSet.getNumberLng(), numberFeatures), language, itMax);
-            validations.add(validation);
-            this.threads.add(new Thread(validation));
-        }
-    }
+		System.out.println("\t\t\t TrainingSet.getSubsetsTab size of element = " + TrainingSet.getSubsetsTab().size());
+		System.out.println("\t\t\t TrainingSet.getSubsetsTab.getLearining size of element = " + TrainingSet.getSubsetsTab().get(0).getLearning().size());
 
-    /**
-     * Launch the validation thread
-     */
-    public void launch(){
-       for(Thread thread : threads){
-           thread.start();
-       }
-    }
+		for (int i = 0; i < numberVal; i++) {
+			Validation validation = new Validation(TrainingSet.getSubsetsTab().get(i), new Model(trainingSet.getNumberLng(),numberFeatures), language, itMax);
+			validations.add(validation);
+			this.threadsValidation.add(new Thread(validation));
+		}
+	}
 
-    /**
-     * Is the tread of validation is over
-     * @return
-     */
-    public boolean isOver(){
-        for(Thread thread : threads){
-            if(thread.isAlive()) return false;
-        }
-        return true;
-    }
+	/**
+	 * Launch the validation thread
+	 */
+	public void launch() {
+		for (Thread thread : threadsValidation) {
+			thread.start();
+		}
+	}
 
-    /**
-     * Get the max error rate
-     * @return
-     */
-    public float getMaxErrorRate(){
-        float errorRate = 0;
-        for(Validation validation : validations){
-            if(validation.getErrorRate() > errorRate) errorRate = validation.getErrorRate();
-        }
-        return errorRate;
-    }
+	/**
+	 * Is the tread of validation is over
+	 * 
+	 * @return
+	 */
+	public boolean isOver() {
+		for (Thread thread : threadsValidation) {
+			if (thread.isAlive())
+				return false;
+		}
+		return true;
+	}
 
-    /**
-     * Get the min error rate
-     * @return
-     */
-    public float getMinErrorRate(){
-        float errorRate = 100;
-        for(Validation validation : validations){
-            if(validation.getErrorRate()  < errorRate) errorRate = validation.getErrorRate();
-        }
-        return errorRate;
-    }
+	/**
+	 * Get the max error rate
+	 * 
+	 * @return
+	 */
+	public float getMaxErrorRate() {
+		float errorRate = 0;
+		for (Validation validation : validations) {
+			if (validation.getErrorRate() > errorRate)
+				errorRate = validation.getErrorRate();
+		}
+		return errorRate;
+	}
 
-
+	/**
+	 * Get the min error rate
+	 * 
+	 * @return
+	 */
+	public float getMinErrorRate() {
+		float errorRate = 100;
+		for (Validation validation : validations) {
+			if (validation.getErrorRate() < errorRate)
+				errorRate = validation.getErrorRate();
+		}
+		return errorRate;
+	}
 
 }

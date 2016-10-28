@@ -31,4 +31,11 @@ public class Subset {
     public List<Training> getValidation() {
         return validation;
     }
+	@Override
+	public String toString() {
+		return "Subset [learning size=" + learning.size() + ", validation size=" + validation.size()
+				+ "]";
+	}
+    
+    
 }
